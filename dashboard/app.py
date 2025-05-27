@@ -1,62 +1,40 @@
 import streamlit as st
+from auth import login
 
-# Page config
-st.set_page_config(page_title="Raasta AI Dashboard", layout="wide", page_icon="🚦")
+st.set_page_config(page_title="Raasta AI Dashboard", layout="wide")
 
-# Custom CSS for better UI
+if "auth" not in st.session_state:
+    st.session_state["auth"] = False
+
+if not st.session_state["auth"]:
+    login()
+    st.stop()
+
+st.sidebar.title("🚦 Raasta AI")
+st.sidebar.success("✅ Logged in")
+
+st.title("📊 Raasta AI Control Panel")
+
 st.markdown("""
-    <style>
-        .main {
-            background-color: #f5f7fa;
-        }
-        .title {
-            font-size: 3em;
-            color: #0f4c75;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .stButton > button {
-            background-color: #0f4c75;
-            color: white;
-            font-size: 18px;
-            padding: 10px 24px;
-            border: none;
-            border-radius: 8px;
-        }
-        .stButton > button:hover {
-            background-color: #3282b8;
-            color: #ffffff;
-        }
-    </style>
+<style>
+div.stButton > button {
+    height: 3em;
+    width: 100%;
+    font-size: 20px;
+    margin: 5px 0;
+}
+</style>
 """, unsafe_allow_html=True)
 
-# Title
-st.markdown('<div class="title">🚦 Raasta AI – Smart Traffic Violation Detection Dashboard</div>', unsafe_allow_html=True)
+col1, col2 = st.columns(2)
+with col1:
+    if st.button("🪖 Helmet Detection"):
+        st.switch_page("pages/Helmet Detection.py")
+    if st.button("🚨 Signal Jump Detection"):
+        st.switch_page("pages/Signal Jump Detection.py")
 
-# Sidebar for feature selection
-st.sidebar.header("🎛️ Select Detection Module")
-module = st.sidebar.radio("", [
-    "Helmet Detection",
-    "Signal Jump Detection",
-    "Triple Riding Detection",
-    "Red Light Violation",
-    "Seatbelt Detection",
-    "Wrong Way Driving",
-    "Fake Number Plate Detection",
-    "Zebra Crossing Violation",
-    "Traffic Heatmap",
-    "Live Traffic Insights"
-])
-
-st.markdown(f"## 🔍 Currently Selected: **{module}**")
-
-# Start Detection Button
-if st.button("🚀 Start Detection"):
-    if module == "Helmet Detection":
-        st.success("Helmet detection started (dummy run)...")
-    else:
-        st.warning(f"{module} module is not yet integrated. Coming soon!")
-
-# Footer Info
-st.markdown("---")
-st.info("📢 More modules will be added soon. Stay tuned for real-time traffic analytics, violation alerts, and city-wise dashboards!")
+with col2:
+    if st.button("👨‍👩‍👧 Triple Riding"):
+        st.switch_page("pages/Triple Riding.py")
+    if st.button("🚦 Red Light Jump"):
+        st.switch_page("pages/Red Light Jump.py")
